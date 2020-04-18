@@ -10,33 +10,24 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
-
-def random_line(img_size=50):
-    p = np.random.random([1])
-    if p < 0.5:
-        return gens.gen_v_line(img_size)
-    else:
-        return gens.gen_h_line(img_size)
-        
-def getData(size=500, img_size=50):
-    x, y = gen_data(size, img_size)
-    x, y = shuffle(x, y)
-    return train_test_split(x, y, test_size = 0.2, random_state = 42)
-
-
 def gen_data(size=500, img_size=50):
     c1 = size // 2
     c2 = size - c1
 
-    label_c1 = np.full([c1, 1], 'Cross')
-    data_c1 = np.array([gens.gen_cross(img_size) for i in range(c1)])
-    label_c2 = np.full([c2, 1], 'Line')
-    data_c2 = np.array([random_line(img_size) for i in range(c2)])
+    label_c1 = np.full([c1, 1], 'Horizontal')
+    data_c1 = np.array([gens.gen_h_line(img_size) for i in range(c1)])
+    label_c2 = np.full([c2, 1], 'Vertical')
+    data_c2 = np.array([gens.gen_v_line(img_size) for i in range(c2)])
 
     data = np.vstack((data_c1, data_c2))
     label = np.vstack((label_c1, label_c2))
 
     return data, label
+    
+def getData(size=500, img_size=50):
+    x, y = gen_data(size, img_size)
+    x, y = shuffle(x, y)
+    return train_test_split(x, y, test_size = 0.2, random_state = 42)
 
 batch_size = 23
 num_classes = 2
